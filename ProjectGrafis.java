@@ -24,7 +24,7 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
             textureDiskMantel, textureKecilMantel, textureBesarMantel,
             textureDiskInti, textureKecilInti, textureBesarInti,
             textureCore, textureGalaxy;
-//lutfan
+    
     private static float rotateX, rotateY, rotateZ, rotateX1, rotateY1, rotateZ1,
             rotateX2, rotateY2, rotateZ2, rotateX3, rotateY3, rotateZ3;
     static int Angle_V = 10, Angle_H = 0, Camera_R = -14;
@@ -33,7 +33,7 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
     static float L_X = 0.0f, L_Y = 0.0f, L_Z = 0.0f;
 
     static int sudut = 0;
-    static int angle = 156;//lutfan
+    static int angle = 156;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Lapisan Kerak Bumi");
