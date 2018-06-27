@@ -24,8 +24,18 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
             textureDiskMantel, textureKecilMantel, textureBesarMantel,
             textureDiskInti, textureKecilInti, textureBesarInti,
             textureCore, textureGalaxy;
-            
-            public static void main(String[] args) {
+//lutfan
+    private static float rotateX, rotateY, rotateZ, rotateX1, rotateY1, rotateZ1,
+            rotateX2, rotateY2, rotateZ2, rotateX3, rotateY3, rotateZ3;
+    static int Angle_V = 10, Angle_H = 0, Camera_R = -14;
+    static float AChange_X = 0, AChange_Y = 0;
+    static float C_X = 0.0f, C_Y = 0.001f, C_Z = -20;
+    static float L_X = 0.0f, L_Y = 0.0f, L_Z = 0.0f;
+
+    static int sudut = 0;
+    static int angle = 156;//lutfan
+
+    public static void main(String[] args) {
         Frame frame = new Frame("Lapisan Kerak Bumi");
         GLCanvas canvas = new GLCanvas();
 
@@ -53,9 +63,14 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         // Center frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        }
-        
-        public void init(GLAutoDrawable drawable) {
+
+        rotateX = 0;
+        rotateY = 0;
+        rotateZ = 0;
+        animator.start();
+    }
+
+    public void init(GLAutoDrawable drawable) {
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
 
@@ -159,7 +174,7 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
     }
-    
+
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
@@ -261,5 +276,57 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         gl.glPopMatrix();
 
         gl.glPopMatrix();
+    }
+
+    public void setCameraRotationH(float h) {
+        Angle_H = (int) h;
+        AChange_X = Angle_H * (float) (2 * Math.PI / 180);
+//        AChange_Y = Angle_V * (float) (2 * Math.PI / 360);
+        C_X = (Camera_R * (float) Math.sin(AChange_X)) + (Camera_R * (float) Math.cos(AChange_X));
+//        C_Y = CameraR * (float) Math.sin(AngleChangeY);
+        C_Z = (Camera_R * (float) Math.cos(AChange_X)) + (Camera_R * (float) -Math.sin(AChange_X));
+        System.out.println(C_X + " - " + C_Y + " - " + C_Z);
+//        System.out.println(" CR " + Camera_R);
+//        System.out.println(" ij " + angle);
+        double d = Math.sqrt(C_X * C_X + C_Y * C_Y + C_Z * C_Z);
+        System.out.println(d);
+    }
+
+    public void setCameraRotationV(float h) {
+        Angle_V = (int) h + 9;
+//        AChange_X = Angle_H * (float) (2 * Math.PI / 360);
+        AChange_Y = Angle_V * (float) (2 * Math.PI / 180);
+//        C_X = CameraR * (float) Math.sin(AngleChangeX);
+        C_Y = Camera_R * (float) Math.sin(AChange_Y);
+        C_Z = Camera_R * (float) Math.cos(AChange_Y);
+        System.out.println(C_X + " || " + C_Y + " || " + C_Z + " || "
+                + (float) Math.sqrt(Math.pow(C_Y, 2) + Math.pow(C_Z, 2)) + " || " + Angle_V);
+    }
+
+    public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+
+    }
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        System.out.println("" + key);
+        if (key == KeyEvent.VK_LEFT) {
+            angle++;
+            setCameraRotationH(angle);
+        } else if (key == KeyEvent.VK_RIGHT) {
+            angle--;
+            setCameraRotationH(angle);
+        } else if (key == KeyEvent.VK_UP && Camera_R < -7) {
+            Camera_R++;
+            setCameraRotationH(angle);
+        } else if (key == KeyEvent.VK_DOWN && Camera_R > -14) {
+            Camera_R--;
+            setCameraRotationH(angle);
+        }
+    }
+    public void keyReleased(KeyEvent e) {
+
     }
 }
