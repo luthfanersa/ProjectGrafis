@@ -34,6 +34,7 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
 
     static int sudut = 0;
     static int angle = 156;
+    static double trans,trans1 = 0;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Lapisan Kerak Bumi");
@@ -213,6 +214,12 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         gl.glRotated(90, 1, 0,0 );
         lap_full(gl, 80, 80);
         
+        gl.glTranslated(trans, 0, 0);
+        lap_inti_bulat(gl, 80, 80);
+        
+        gl.glTranslated(trans1, 0, 0);
+        lap_set_inti(gl, 80, 80);
+        
         // Flush all drawing operations to the graphics card
         gl.glFlush();
     }
@@ -273,6 +280,55 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         glu.gluSphere(q, 0.6, slices, stacks);
         textureCore.disable();
         gl.glDisable(GL.GL_CLIP_PLANE1);
+        gl.glPopMatrix();
+
+        gl.glPopMatrix();
+    }
+    static void lap_inti_bulat(GL gl, int slices, int stacks) {
+        gl.glPushMatrix();
+        GLU glu = new GLU();
+        GLUquadric q = glu.gluNewQuadric();
+        textureCore.enable();
+        textureCore.bind();
+        glu.gluSphere(q, 0.6, slices, stacks);
+        textureCore.disable();
+        gl.glPopMatrix();
+    }
+    static void lap_set_inti(GL gl, int slices, int stacks) {
+        gl.glPushMatrix();
+        GLU glu = new GLU();
+        GLUquadric q = glu.gluNewQuadric();
+        double[] eqn = {1, 0, 0, 0};
+        glu.gluQuadricTexture(q, true); // menangkap texture
+
+        //Setengah Kecil Inti
+        gl.glClipPlane(GL.GL_CLIP_PLANE0, eqn, 0);
+        gl.glEnable(GL.GL_CLIP_PLANE0);
+        textureBesarInti.enable();
+        textureBesarInti.bind();
+        glu.gluSphere(q, 0.6, slices, stacks);
+        textureBesarInti.disable();
+        gl.glDisable(GL.GL_CLIP_PLANE0);
+
+        //DiskInti
+        gl.glPushMatrix();
+        textureDiskInti.enable();
+        textureDiskInti.bind();
+        gl.glRotatef(90, 0, 1, 0);
+        glu.gluDisk(q, 0.6, 1, slices, stacks);
+        gl.glRotatef(-90, 0, 1, 0);
+        textureDiskInti.disable();
+        gl.glPopMatrix();
+
+        //Setengah Besar Inti
+        gl.glPushMatrix();
+        gl.glClipPlane(GL.GL_CLIP_PLANE0, eqn, 0);
+        gl.glEnable(GL.GL_CLIP_PLANE0);
+        textureKecilInti.enable();
+        textureKecilInti.bind();
+        glu.gluSphere(q, 1, slices, stacks);
+        textureKecilInti.disable();
+        gl.glDisable(GL.GL_CLIP_PLANE0);
         gl.glPopMatrix();
 
         gl.glPopMatrix();
