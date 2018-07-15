@@ -34,7 +34,7 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
 
     static int sudut = 0;
     static int angle = 156;
-    static double trans,trans1 = 0;
+    static double trans,trans1,trans2,trans3 = 0;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Lapisan Kerak Bumi");
@@ -210,6 +210,7 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
 
         //Auto Rotate Object
         sudut += 1;
+        galaxy(gl, 20, 80, 80);
 
         gl.glRotated(90, 1, 0,0 );
         lap_full(gl, 80, 80);
@@ -220,6 +221,11 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         gl.glTranslated(trans1, 0, 0);
         lap_set_inti(gl, 80, 80);
         
+        gl.glTranslated(trans2, 0, 0);
+        lap_set_mantel(gl, 80, 80);
+        
+        gl.glTranslated(trans3, 0, 0);
+        lap_set_bumi(gl, 80, 80);
         // Flush all drawing operations to the graphics card
         gl.glFlush();
     }
@@ -333,7 +339,85 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
 
         gl.glPopMatrix();
     }
+    static void lap_set_mantel(GL gl, int slices, int stacks) {
+        gl.glPushMatrix();
+        GLU glu = new GLU();
+        GLUquadric q = glu.gluNewQuadric();
+        double[] eqn = {1, 0, 0, 0};
+        glu.gluQuadricTexture(q, true); // menangkap texture
 
+        //Setengah Kecil Mantel 
+        gl.glClipPlane(GL.GL_CLIP_PLANE0, eqn, 0);
+        gl.glEnable(GL.GL_CLIP_PLANE0);
+        textureKecilMantel.enable();
+        textureKecilMantel.bind();
+        glu.gluSphere(q, 1, slices, stacks);
+        textureKecilMantel.disable();
+        gl.glDisable(GL.GL_CLIP_PLANE0);
+
+        //DiskMantel
+        gl.glPushMatrix();
+        textureDiskMantel.enable();
+        textureDiskMantel.bind();
+        gl.glRotatef(90, 0, 1, 0);
+        glu.gluDisk(q, 1, 1.9, slices, stacks);
+        gl.glRotatef(-90, 0, 1, 0);
+        textureDiskMantel.disable();
+        gl.glPopMatrix();
+
+        //Setengah Besar Mantel
+        gl.glPushMatrix();
+        gl.glClipPlane(GL.GL_CLIP_PLANE0, eqn, 0);
+        gl.glEnable(GL.GL_CLIP_PLANE0);
+        textureBesarMantel.enable();
+        textureBesarMantel.bind();
+        glu.gluSphere(q, 1.9, slices, stacks);
+        textureBesarMantel.disable();
+        gl.glDisable(GL.GL_CLIP_PLANE0);
+        gl.glPopMatrix();
+
+        gl.glPopMatrix();
+    }
+
+    static void lap_set_bumi(GL gl, int slices, int stacks) {
+        gl.glPushMatrix();
+        GLU glu = new GLU();
+        GLUquadric q = glu.gluNewQuadric();
+        double[] eqn = {1, 0, 0, 0};
+        glu.gluQuadricTexture(q, true); // menangkap texture
+
+        //Setengah Kerak 
+        gl.glClipPlane(GL.GL_CLIP_PLANE0, eqn, 0);
+        gl.glEnable(GL.GL_CLIP_PLANE0);
+        textureDiskKerak.enable();
+        textureDiskKerak.bind();
+        glu.gluSphere(q, 1.9, slices, stacks);
+        textureDiskKerak.disable();
+        gl.glDisable(GL.GL_CLIP_PLANE0);
+
+        //Setengah Bumi
+        gl.glClipPlane(GL.GL_CLIP_PLANE0, eqn, 0);
+        gl.glEnable(GL.GL_CLIP_PLANE0);
+        textureBumi.enable();
+        textureBumi.bind();
+        glu.gluSphere(q, 2, slices, stacks);
+        textureBumi.disable();
+        gl.glDisable(GL.GL_CLIP_PLANE0);
+
+        gl.glPopMatrix();
+    }
+    static void galaxy(GL gl, double radius, int slices, int stacks) {
+        gl.glPushMatrix();
+        GLU glu = new GLU();
+        GLUquadric q = glu.gluNewQuadric();
+        glu.gluQuadricTexture(q, true); // menangkap texture
+        textureGalaxy.enable();
+        textureGalaxy.bind();
+        glu.gluSphere(q, radius, slices, stacks);
+        textureGalaxy.disable();
+        gl.glPopMatrix();
+    }
+    
     public void setCameraRotationH(float h) {
         Angle_H = (int) h;
         AChange_X = Angle_H * (float) (2 * Math.PI / 180);
