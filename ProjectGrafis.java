@@ -475,10 +475,10 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
         trans1 = trans1 + 0.2;
         trans2 = trans2 + 0.4;
         trans3 = trans3 + 0.8;
-    }else if (key -- KeyEvent.VK_P) {
+    }/*else if (key -- KeyEvent.VK_P) {  //unnecessary
         angle++;
         setCameraRotationV(angle);
-    }
+    }*/
     public void keyReleased(KeyEvent e) {
 
     }
