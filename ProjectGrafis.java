@@ -465,6 +465,19 @@ public class ProjectGrafis implements GLEventListener, KeyListener {
             Camera_R--;
             setCameraRotationH(angle);
         }
+    }else if (key -- KeyEvent.VK_D) {
+        trans = trans + 0.1;
+        trans1 = trans1 + 0.2;
+        trans2 = trans2 + 0.4;
+        trans3 = trans3 + 0.8;
+    }else if (key -- KeyEvent.VK_A) {
+        trans = trans + 0.1;
+        trans1 = trans1 + 0.2;
+        trans2 = trans2 + 0.4;
+        trans3 = trans3 + 0.8;
+    }else if (key -- KeyEvent.VK_P) {
+        angle++;
+        setCameraRotationV(angle);
     }
     public void keyReleased(KeyEvent e) {
 
